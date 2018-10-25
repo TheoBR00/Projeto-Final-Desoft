@@ -3,6 +3,8 @@ import sys
 from pygame.locals import *
 from random import randrange
 
+inicio = pygame.init()
+
 class Personagem(pygame.sprite.Sprite):
     
     def __init__(self, sprite, pos_x, pos_y, largura, altura):
@@ -20,16 +22,34 @@ class Personagem(pygame.sprite.Sprite):
         for enemy in touro and pygame.sprite.collide(personagem, touro, False):
             enemy.vida -= dano
 
-game_run = True
-
-inicio = pygame.init()
-
+todos_amigos = pygame.sprite.Group()
+todos_inimigos = pygame.sprite.Group()
 tela = pygame.display.set_mode((1238, 491), 0, 32)
-pygame.display.set_caption('Foge do Touro!')
+fundo = pygame.image.load("fundo-800X600.jpg").convert()
+relogio = pygame.time.Clock()
+
 
 game_run = True
 
-fundo = pygame.image.load("fundo-800X600.jpg").convert()
+
+pygame.display.set_caption('Foge do Touro!')
+while game_run:
+    tempo = relogio.tick(30)
+    for event in pygame.event.get():
+      if event.type == QUIT:
+          game_run = False
+    tela.blit(fundo, (0, 0))
+    todos_amigos.draw(tela)
+    todos_inimigos.draw(tela)
+    pygame.display.update()
+                
+pygame.display.quit()
+
+
+
+
+
+
     
     
     
