@@ -24,7 +24,7 @@ class Personagem(pygame.sprite.Sprite):
 
 todos_amigos = pygame.sprite.Group()
 todos_inimigos = pygame.sprite.Group()
-tela = pygame.display.set_mode((1238, 491), 0, 32)
+tela = pygame.display.set_mode((800, 600), 0, 32)
 fundo = pygame.image.load("fundo-800X600.jpg").convert()
 relogio = pygame.time.Clock()
 
