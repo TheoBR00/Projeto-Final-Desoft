@@ -40,7 +40,7 @@ todos_amigos = pygame.sprite.Group()
 todos_inimigos = pygame.sprite.Group()
 tela = pygame.display.set_mode((800, 600), 0, 32)
 fundo = pygame.image.load("imagem_fundo.png").convert()
-per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 100, 150)
+per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 300, 350)
 todos_amigos.add(per_1)
 relogio = pygame.time.Clock()
 
