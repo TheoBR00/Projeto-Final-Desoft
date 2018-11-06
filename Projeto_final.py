@@ -2,7 +2,7 @@ import pygame
 import sys
 from pygame.locals import *
 import numpy as np
-from random import randrange
+import random
 
 inicio = pygame.init()
 
@@ -111,11 +111,10 @@ background_size = fundo.get_size()
 per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 400, 350)
 #per_1_j = Personagem(["menino pulando/Jump__000", "menino pulando/Jump__001", "menino pulando/Jump__002", "menino pulando/Jump__003", "menino pulando/Jump__004", "menino pulando/Jump__005", "menino pulando/Jump__006", "menino pulando/Jump__007", "menino pulando/Jump__008", "menino pulando/Jump__009"])
 dino = Personagem(["dinossauro/Run (1).png", "dinossauro/Run (2).png", "dinossauro/Run (3).png", "dinossauro/Run (4).png", "dinossauro/Run (5).png", "dinossauro/Run (6).png", "dinossauro/Run (7).png", "dinossauro/Run (8).png"], 100, 350)
-obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png"], 500, 370)
 dino = Personagem2(["dinossauro/Run (1).png", "dinossauro/Run (2).png", "dinossauro/Run (3).png", "dinossauro/Run (4).png", "dinossauro/Run (5).png", "dinossauro/Run (6).png", "dinossauro/Run (7).png", "dinossauro/Run (8).png"], 10, 280)
 obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"], 500, 270)
-
 todos_amigos.add(per_1)
+objetos = ["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"]
 todos_inimigos.add(dino)
 todos_obstaculos.add(obst)
 relogio = pygame.time.Clock()
@@ -142,6 +141,12 @@ while game_run:
     x1 -= 10
     x -= 10
     tela.blit(fundo, (x, y))
+    for n in range(2):
+        img = random.choice(obstaculos.obst)
+        img.draw(tela)
+    
+        
+        
     tela.blit(fundo, (x1, y1))
     if x < -w:
         x = w
@@ -157,6 +162,8 @@ while game_run:
     todos_amigos.update()
     todos_inimigos.update()
     todos_inimigos.draw(tela)
+    selec_1.draw(tela)
+    selec_2.draw(tela)
     pygame.display.flip()
     pygame.display.update()
         
