@@ -35,6 +35,7 @@ class Personagem(pygame.sprite.Sprite):
             
     def jump(self):
         self.v_y = -14
+        self.v_x = 10
              
     def update(self):
         self.atual += 1
@@ -43,7 +44,7 @@ class Personagem(pygame.sprite.Sprite):
         self.image = self.imagens[self.atual]
         self.rect.y += self.v_y
         self.v_y += 1
-        self.v_x=10
+        #self.v_x=10
         self.d_x += self.v_x
         if self.rect.y > 350:
             self.rect.y = 350
@@ -111,7 +112,6 @@ lista_obst=["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.p
 
 todos_amigos.add(per_1)
 todos_inimigos.add(dino)
-
 relogio = pygame.time.Clock()
 
 
@@ -131,14 +131,6 @@ while game_run:
         obst = obstaculos([random.choice(lista_obst)], 1200, 430)
         todos_obstaculos.add(obst)
         per_1.d_x= 0
-    colisao=pygame.sprite.groupcollide(todos_amigos,todos_obstaculos,False,True)    
-    for event in pygame.event.get():
-        if (event.type==pygame.KEYDOWN):
-            if (event.key==pygame.K_SPACE):
-                per_1.jump()
-        if event.type == QUIT:
-            game_run = False
-#    tela.blit(fundo, (0, 0))
     x1 -= per_1.v_x
     x -= per_1.v_x
     tela.blit(fundo, (x, y))
@@ -147,6 +139,20 @@ while game_run:
         x = w
     if x1 < -w:
         x1 = w
+    colisao = pygame.sprite.groupcollide(todos_amigos,todos_obstaculos,False,True)
+    if len(colisao) != 0:
+        print(colisao)
+        per_1.v_x = 0
+        #x = 0
+        
+    for event in pygame.event.get():
+        if (event.type==pygame.KEYDOWN):
+            if (event.key==pygame.K_SPACE):
+                per_1.jump()
+        if event.type == QUIT:
+            game_run = False
+#    tela.blit(fundo, (0, 0))
+    
     
     
     todos_amigos.draw(tela)
