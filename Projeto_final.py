@@ -111,7 +111,7 @@ lista_obst=["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.p
 
 todos_amigos.add(per_1)
 todos_inimigos.add(dino)
-todos_obstaculos.add(obst)
+
 relogio = pygame.time.Clock()
 
 
