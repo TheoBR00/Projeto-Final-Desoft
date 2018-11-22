@@ -159,6 +159,7 @@ while game_run:
     
     todos_obstaculos.update()
     todos_obstaculos.draw(tela)
+    todos_obstaculos.draw(tela)
     todos_amigos.update()
     todos_inimigos.update()
     todos_inimigos.draw(tela)
