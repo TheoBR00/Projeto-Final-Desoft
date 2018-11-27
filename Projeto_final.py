@@ -156,7 +156,9 @@ while game_run:
     else:    
         obst.v_x=-10
         
-             
+    colisao_dino = pygame.sprite.groupcollide(todos_amigos, todos_inimigos, False,False)
+    if len(colisao_dino) != 0:
+        game_run = False
         
         #x = 0
         
