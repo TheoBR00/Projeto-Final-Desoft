@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Nov 27 16:54:23 2018
+
+@author: andre
+"""
+
+
 import pygame
 import sys
 from pygame.locals import *
@@ -73,30 +81,28 @@ class Dinossauro(pygame.sprite.Sprite):
         if self.atual >= len(self.imagens):
             self.atual = 0
         self.image = self.imagens[self.atual]
-        if self.rect.x+40<self.per_1.rect.x :
+        if self.rect.x+35<self.per_1.rect.x :
             self.rect.x+=self.v_x-self.per_1.v_x
         
 class obstaculos(pygame.sprite.Sprite):
     
-    def __init__(self, sprite, pos_x, pos_y):
+    def __init__(self, sprite, pos_x, pos_y,per_1):
         self.atual = 0
         pygame.sprite.Sprite.__init__(self)
         self.imagens = []
         for imagem in sprite:
             self.image = pygame.image.load(imagem)
             self.imagens.append(self.image)
+        self.per_1=per_1    
         self.rect = self.image.get_rect()
         self.rect.x = pos_x
         self.rect.y = pos_y
         self.v_x = -10
     
     def update(self):
-        self.rect.x += self.v_x
+        self.rect.x -= self.per_1.v_x
         
         
-    
-        
-
 todos_amigos = pygame.sprite.Group()
 todos_inimigos = pygame.sprite.Group()
 todos_obstaculos = pygame.sprite.Group()
@@ -104,10 +110,10 @@ tela = pygame.display.set_mode((1250, 600), 0, 32)
 fundo = pygame.image.load("imagem_fundo.png").convert()
 background_size = fundo.get_size()
 
-per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 470, 350)
+per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 700, 350)
 #per_1_j = Personagem(["menino pulando/Jump__000", "menino pulando/Jump__001", "menino pulando/Jump__002", "menino pulando/Jump__003", "menino pulando/Jump__004", "menino pulando/Jump__005", "menino pulando/Jump__006", "menino pulando/Jump__007", "menino pulando/Jump__008", "menino pulando/Jump__009"])
 dino = Dinossauro(["dinossauro/Run (1).png", "dinossauro/Run (2).png", "dinossauro/Run (3).png", "dinossauro/Run (4).png", "dinossauro/Run (5).png", "dinossauro/Run (6).png", "dinossauro/Run (7).png", "dinossauro/Run (8).png"], 50, 280,per_1)
-obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"], 560, 430)
+obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"], 560, 430,per_1)
 lista_obst=["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"]
 
 todos_amigos.add(per_1)
@@ -124,7 +130,7 @@ y1 = 0
 
 
 pygame.display.set_caption('Foge do Dinossauro!')
-dx_cria = 1000
+dx_cria = 100
 t_0 = 0
 while game_run:
     tempo = relogio.tick(30)
@@ -133,7 +139,7 @@ while game_run:
         t_0 = conta_t
         dx_cria = 700
     if per_1.d_x>dx_cria:
-        obst = obstaculos([random.choice(lista_obst)], 1200, 430)
+        obst = obstaculos([random.choice(lista_obst)], 1200, 430,per_1)
         todos_obstaculos.add(obst)
         per_1.d_x= 0
     x1 -= per_1.v_x
@@ -150,18 +156,10 @@ while game_run:
         x1 = w
     colisao = pygame.sprite.groupcollide(todos_amigos,todos_obstaculos,False,False)
     if len(colisao) != 0:
-        print(colisao)
         obst.v_x= 0
         per_1.v_x = 0
-    else:    
+    else:
         obst.v_x=-10
-        
-    colisao_dino = pygame.sprite.groupcollide(todos_amigos, todos_inimigos, False,False)
-    if len(colisao_dino) != 0:
-        game_run = False
-        
-        #x = 0
-        
     for event in pygame.event.get():
         if (event.type==pygame.KEYDOWN):
             if (event.key==pygame.K_SPACE):
@@ -194,5 +192,3 @@ pygame.display.quit()
     
     
     
-        
-        
