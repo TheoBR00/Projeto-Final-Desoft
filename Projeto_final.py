@@ -132,6 +132,8 @@ y1 = 0
 pygame.display.set_caption('Foge do Dinossauro!')
 dx_cria = 100
 t_0 = 0
+pont = 0
+contra_pont = 0
 while game_run:
     tempo = relogio.tick(30)
     conta_t = pygame.time.get_ticks()
@@ -163,12 +165,23 @@ while game_run:
         obst.v_x=-10
     
     if len(colisao_dino) != 0:
+        print(per_1.d_x)
+        print(pont)
+        print(contra_pont)
         game_run = False
     for event in pygame.event.get():
         if (event.type==pygame.KEYDOWN):
             if (event.key==pygame.K_SPACE):
                 per_1.jump()
+        if colisao == True:
+            pont += 1
+    
+        elif colisao == False and event.key==pygame.K_SPACE:
+            contra_pont -= 1
         if event.type == QUIT:
+            print(per_1.d_x)
+            print(pont)
+            print(contra_pont)
             game_run = False
 #    tela.blit(fundo, (0, 0))
     
