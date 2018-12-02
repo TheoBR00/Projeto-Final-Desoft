@@ -138,7 +138,7 @@ novo_d_x = 0
 while game_run:
     tempo = relogio.tick(30)
     conta_t = pygame.time.get_ticks()
-    conta = per_1.d_x * 0.1
+    conta = per_1.d_x * 0.0001
     novo_d_x += conta
     if conta_t - t_0 > 3000:
         t_0 = conta_t
