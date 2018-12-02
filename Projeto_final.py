@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov 27 16:54:23 2018
-
-@author: andre
-"""
-
-
 import pygame
 import sys
 from pygame.locals import *
@@ -42,7 +34,7 @@ class Personagem(pygame.sprite.Sprite):
             enemy.vida -= dano
             
     def jump(self):
-        self.v_y = -23
+        self.v_y = -18 
         self.v_x = 10
              
     def update(self):
@@ -140,7 +132,7 @@ while game_run:
     conta_t = pygame.time.get_ticks()
     conta = per_1.d_x * 0.0001
     novo_d_x += conta
-    if conta_t - t_0 > 3000:
+    if conta_t - t_0 > 300:
         t_0 = conta_t
         dx_cria = 700
     if per_1.d_x>dx_cria:
@@ -153,21 +145,21 @@ while game_run:
     tela.blit(fundo, (x1, y1))
    
    
-    tela.blit(fundo, (x, y))
+    tela.blit(fundo, (x, y))  
     tela.blit(fundo, (x1, y1))
     if x < -w:
         x = w
     if x1 < -w:
         x1 = w
-    colisao = pygame.sprite.groupcollide(todos_amigos,todos_obstaculos,False,False)
-    colisao_dino = pygame.sprite.groupcollide(todos_amigos, todos_inimigos, False, False)
-    if len(colisao) != 0:
+    colisao = pygame.sprite.collide_mask(per_1,obst)
+    colisao_dino = pygame.sprite.collide_mask(dino,per_1)
+    if colisao:
         obst.v_x= 0
         per_1.v_x = 0
     else:
         obst.v_x=-10
     
-    if len(colisao_dino) != 0:
+    if colisao_dino:
         print(novo_d_x)
         game_run = False
     for event in pygame.event.get():
@@ -199,6 +191,7 @@ while game_run:
         
                 
 pygame.display.quit()
+
 
 
 
