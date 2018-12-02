@@ -155,11 +155,15 @@ while game_run:
     if x1 < -w:
         x1 = w
     colisao = pygame.sprite.groupcollide(todos_amigos,todos_obstaculos,False,False)
+    colisao_dino = pygame.sprite.groupcollide(todos_amigos, todos_inimigos, False, False)
     if len(colisao) != 0:
         obst.v_x= 0
         per_1.v_x = 0
     else:
         obst.v_x=-10
+    
+    if len(colisao_dino) != 0:
+        game_run = False
     for event in pygame.event.get():
         if (event.type==pygame.KEYDOWN):
             if (event.key==pygame.K_SPACE):
