@@ -166,8 +166,6 @@ while game_run:
     
     if len(colisao_dino) != 0:
         print(per_1.d_x)
-        print(pont)
-        print(contra_pont)
         game_run = False
     for event in pygame.event.get():
         if (event.type==pygame.KEYDOWN):
@@ -180,8 +178,6 @@ while game_run:
             contra_pont -= 1
         if event.type == QUIT:
             print(per_1.d_x)
-            print(pont)
-            print(contra_pont)
             game_run = False
 #    tela.blit(fundo, (0, 0))
     
