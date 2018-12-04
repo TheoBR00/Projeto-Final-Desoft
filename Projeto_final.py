@@ -164,7 +164,7 @@ while game_run:
         game_run = False
     for event in pygame.event.get():
         if (event.type==pygame.KEYDOWN):
-            if (event.key==pygame.K_SPACE) and per_1.rect.y > 150:
+            if (event.key==pygame.K_SPACE) and per_1.rect.y > 180:
                 per_1.jump()
         if colisao == True:
             pont += 1
