@@ -6,6 +6,10 @@ import random
 
 inicio = pygame.init()
 
+pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load("musica jogo.mp3")
+pygame.mixer.music.play()
 class Personagem(pygame.sprite.Sprite):
     
     def __init__(self, sprite, pos_x, pos_y):
@@ -99,8 +103,11 @@ todos_amigos = pygame.sprite.Group()
 todos_inimigos = pygame.sprite.Group()
 todos_obstaculos = pygame.sprite.Group()
 tela = pygame.display.set_mode((1250, 600), 0, 32)
+estado=0
 fundo = pygame.image.load("imagem_fundo.png").convert()
+gameover=pygame.image.load("game_over.png").convert()
 background_size = fundo.get_size()
+background_size2 = gameover.get_size()
 
 per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 700, 350)
 #per_1_j = Personagem(["menino pulando/Jump__000", "menino pulando/Jump__001", "menino pulando/Jump__002", "menino pulando/Jump__003", "menino pulando/Jump__004", "menino pulando/Jump__005", "menino pulando/Jump__006", "menino pulando/Jump__007", "menino pulando/Jump__008", "menino pulando/Jump__009"])
@@ -120,75 +127,83 @@ y = 0
 x1 = w
 y1 = 0
 
-
 pygame.display.set_caption('Foge do Dinossauro!')
 dx_cria = 100
 t_0 = 0
 pont = 0
 contra_pont = 0
 novo_d_x = 0
+
 while game_run:
+    
     tempo = relogio.tick(30)
-    conta_t = pygame.time.get_ticks()
-    conta = (per_1.d_x * 1.5)/183
-    novo_d_x += conta
-    if conta_t - t_0 > 300:
-        t_0 = conta_t
-        dx_cria = 700
-    if per_1.d_x>dx_cria:
-        obst = obstaculos([random.choice(lista_obst)], 1200, 430,per_1)
-        todos_obstaculos.add(obst)
-        per_1.d_x= 0
-    x1 -= per_1.v_x
-    x -= per_1.v_x
-    tela.blit(fundo, (x, y))
-    tela.blit(fundo, (x1, y1))
-   
-   
-    tela.blit(fundo, (x, y))  
-    tela.blit(fundo, (x1, y1))
-    if x < -w:
-        x = w
-    if x1 < -w:
-        x1 = w
-    colisao = pygame.sprite.collide_mask(per_1,obst)
-    colisao_dino = pygame.sprite.collide_mask(dino,per_1)
-    if colisao:
-        obst.v_x= 0
-        per_1.v_x = 0
-    else:
-        obst.v_x=-10
-    
-    if colisao_dino:
-        print(novo_d_x)
-        game_run = False
-    for event in pygame.event.get():
-        if (event.type==pygame.KEYDOWN):
-            if (event.key==pygame.K_SPACE) and per_1.rect.y > 180:
-                per_1.jump()
-        if colisao == True:
-            pont += 1
-    
-        elif colisao == False and event.key==pygame.K_SPACE:
-            contra_pont -= 1
-        if event.type == QUIT:
+    if estado==0:
+        conta_t = pygame.time.get_ticks()
+        conta = (per_1.d_x * 1.5)/183
+        novo_d_x += conta
+        if conta_t - t_0 > 300:
+            t_0 = conta_t
+            dx_cria = 700
+        if per_1.d_x>dx_cria:
+            obst = obstaculos([random.choice(lista_obst)], 1200, 430,per_1)
+            todos_obstaculos.add(obst)
+            per_1.d_x= 0
+        x1 -= per_1.v_x
+        x -= per_1.v_x
+        tela.blit(fundo, (x, y))
+        tela.blit(fundo, (x1, y1))
+              
+        tela.blit(fundo, (x, y))  
+        tela.blit(fundo, (x1, y1))
+        if x < -w:
+            x = w
+        if x1 < -w:
+            x1 = w
+        colisao = pygame.sprite.collide_mask(per_1,obst)
+        colisao_dino = pygame.sprite.collide_mask(dino,per_1)
+        if colisao:
+            obst.v_x= 0
+            per_1.v_x = 0
+        else:
+            obst.v_x=-10
+        
+        if colisao_dino:
             print(novo_d_x)
-            game_run = False
-#    tela.blit(fundo, (0, 0))
-    
-    
-    
-    todos_amigos.draw(tela)
-    
-    todos_obstaculos.update()
-    todos_obstaculos.draw(tela)
-    todos_obstaculos.draw(tela)
-    todos_amigos.update()
-    todos_inimigos.update()
-    todos_inimigos.draw(tela)
+            estado=1
+            pygame.mixer.music.stop()
+            
+        for event in pygame.event.get():
+            if (event.type==pygame.KEYDOWN):
+                if (event.key==pygame.K_SPACE) and per_1.rect.y > 150: 
+                    per_1.jump()
+            if colisao == True:
+                pont += 1
+        
+            elif colisao == False and event.key==pygame.K_SPACE:
+                contra_pont -= 1
+            if event.type == QUIT:
+                print(novo_d_x)
+                pygame.mixer.music.stop()
+                game_run = False
+
+        todos_amigos.draw(tela)
+        todos_obstaculos.update()
+        todos_obstaculos.draw(tela)
+        todos_obstaculos.draw(tela)
+        todos_amigos.update()
+        todos_inimigos.update()
+        todos_inimigos.draw(tela)
+        
+     
+    elif estado==1:
+        tela.blit(gameover, (0, 0))
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                    print(novo_d_x)
+                    pygame.mixer.music.stop()
+                    game_run = False
     pygame.display.flip()
     pygame.display.update()
-        
                 
 pygame.display.quit()
 
