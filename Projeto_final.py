@@ -130,7 +130,7 @@ novo_d_x = 0
 while game_run:
     tempo = relogio.tick(30)
     conta_t = pygame.time.get_ticks()
-    conta = per_1.d_x * 0.0001
+    conta = per_1.d_x
     novo_d_x += conta
     if conta_t - t_0 > 300:
         t_0 = conta_t
@@ -164,7 +164,7 @@ while game_run:
         game_run = False
     for event in pygame.event.get():
         if (event.type==pygame.KEYDOWN):
-            if (event.key==pygame.K_SPACE):
+            if (event.key==pygame.K_SPACE) and per_1.rect.y > 150:
                 per_1.jump()
         if colisao == True:
             pont += 1
