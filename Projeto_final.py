@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Dec  5 17:08:59 2018
+
+@author: andre
+"""
+
 import pygame
 import sys
 from pygame.locals import *
@@ -67,7 +74,7 @@ class Dinossauro(pygame.sprite.Sprite):
         self.rect.x = pos_x
         self.rect.y = pos_y
         self.v_y = 0
-        self.v_x=per_1.v_x-1
+        self.v_x=per_1.v_x-0.2
         self.per_1=per_1
     def vel(self, velocidade_x):
         self.v_x = velocidade_x
@@ -127,27 +134,33 @@ y = 0
 x1 = w
 y1 = 0
 
-pygame.display.set_caption('Foge do Dinossauro!')
+pygame.display.set_caption('Dino Run')
 dx_cria = 100
 t_0 = 0
 pont = 0
 contra_pont = 0
 novo_d_x = 0
-
+dx_cria=1000
+distancia=0
+velocidade=30
 while game_run:
     
-    tempo = relogio.tick(30)
+    tempo = relogio.tick(velocidade)
     if estado==0:
         conta_t = pygame.time.get_ticks()
         conta = (per_1.d_x * 1)/183
         novo_d_x += conta
-        if conta_t - t_0 > 300:
-            t_0 = conta_t
-            dx_cria = 700
+            
         if per_1.d_x>dx_cria:
             obst = obstaculos([random.choice(lista_obst)], 1200, 430,per_1)
             todos_obstaculos.add(obst)
+            distancia+=per_1.d_x
+            if dx_cria>500:
+                dx_cria-=20
+            if velocidade<80:
+                velocidade+=0.5
             per_1.d_x= 0
+            
         x1 -= per_1.v_x
         x -= per_1.v_x
         tela.blit(fundo, (x, y))
@@ -174,7 +187,7 @@ while game_run:
             
         for event in pygame.event.get():
             if (event.type==pygame.KEYDOWN):
-                if (event.key==pygame.K_SPACE) and per_1.rect.y > 150: 
+                if (event.key==pygame.K_SPACE) and per_1.rect.y > 180: 
                     per_1.jump()
             if colisao == True:
                 pont += 1
@@ -209,10 +222,3 @@ pygame.display.quit()
 
 
 
-
-
-
-
-    
-    
-    
