@@ -146,6 +146,7 @@ contra_pont = 0
 novo_d_x = 0
 dx_cria=1000
 distancia=0
+high_score=distancia
 velocidade=30
 font = pygame.font.SysFont('assets/swiss911.ttf', 50)
 font2 = pygame.font.SysFont('assets/swiss911.ttf', 100)
@@ -169,20 +170,20 @@ while game_run:
                     estado=1        
     if estado==1:
         
+        palavra_high_score='High Score:'
         palavra_pontuacao='Pontuação:'
         palavra_tempo='Tempo:'
         tempo = str("%.2f" % cronometro)
+        high_score1=distancia
         
         pontuacao=str("%.0f"% distancia)
-        
+        high_score=str("%.0f"% high_score1)
         if timer:
             tempo = str("%.2f" % cronometro)
         #tela.blit(font.render(tempo, True, (0, 0, 0)), (550,25)) #centro
         fonte = pygame.font.SysFont('Consolas', 50)      
         total = str("%.2f" % cronometro)
-        tela.blit(font.render(palavra_tempo, True, (0, 0, 0)), (10,10))
-        tela.blit(font.render(tempo, True, (0, 0, 0)), (50,50)) #(canto superiro esquerdo)
-        pygame.display.update()
+        
         
                 
         if not game_run:
@@ -200,9 +201,9 @@ while game_run:
             obst = obstaculos([random.choice(lista_obst)], 1200, 430,per_1)
             todos_obstaculos.add(obst)
             distancia+=per_1.d_x
-            if dx_cria>500:
+            if dx_cria>550:
                 dx_cria-=20
-            if velocidade<90:
+            if velocidade<100:
                 velocidade+=1
             per_1.d_x= 0
             
@@ -227,13 +228,13 @@ while game_run:
         else:
             obst.v_x=-10
         
-        if colisao_dino:
-            
+        if colisao_dino:   
             estado=2
             
             pygame.mixer.music.stop()
             cronometro=cronometro
             distancia=distancia
+            
         
         else:    
             
@@ -242,7 +243,7 @@ while game_run:
             
         for event in pygame.event.get():
             if (event.type==pygame.KEYDOWN):
-                if (event.key==pygame.K_SPACE) and per_1.rect.y > 180: 
+                if (event.key==pygame.K_SPACE) and per_1.rect.y > 200: 
                     per_1.jump()
             if colisao == True:
                 pont += 1
@@ -256,7 +257,9 @@ while game_run:
                 pygame.mixer.music.stop()
                 game_run = False
 
-
+        tela.blit(font.render(palavra_tempo, True, (0, 0, 0)), (10,10))
+        tela.blit(font.render(tempo, True, (0, 0, 0)), (50,50)) 
+        
         todos_amigos.draw(tela)
         todos_obstaculos.update()
         todos_obstaculos.draw(tela)
@@ -268,8 +271,10 @@ while game_run:
         
     elif estado==2:
         tela.blit(gameover, (0, 0))
-        tela.blit(font2.render(palavra_pontuacao, True, (0, 0, 0)), (450,450))
-        tela.blit(font2.render(pontuacao, True, (0, 0, 0)), (550,530))
+        #tela.blit(font2.render(palavra_high_score, True, (0, 0, 0)), (10,450))
+        tela.blit(font2.render(palavra_pontuacao, True, (0, 0, 0)), (800,450))
+        tela.blit(font2.render(pontuacao, True, (0, 0, 0)), (1000,530))
+        #tela.blit(font2.render(high_score, True, (0, 0, 0)), (200,530))
         for event in pygame.event.get():
             if event.type == QUIT:
                     print(novo_d_x)
@@ -324,10 +329,12 @@ while game_run:
                     font2 = pygame.font.SysFont('assets/swiss911.ttf', 100)
 
 
-
+                    pygame.init()
+                    pygame.mixer.init()
+                    pygame.mixer.music.load("musica jogo.mp3")
+                    pygame.mixer.music.play()
         
-                    estado=1            
-                    
+                    estado=0            
                     
     pygame.display.flip()
             
