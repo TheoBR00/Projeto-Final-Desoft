@@ -274,8 +274,60 @@ while game_run:
             if event.type == QUIT:
                     print(novo_d_x)
                     pygame.mixer.music.stop()
-                    
                     game_run = False
+                    
+            if (event.type==pygame.KEYDOWN):
+                if (event.key==pygame.K_RETURN): 
+                    cronometro =0
+                    todos_amigos = pygame.sprite.Group()
+                    todos_inimigos = pygame.sprite.Group()
+                    todos_obstaculos = pygame.sprite.Group()
+                    tela = pygame.display.set_mode((1250, 600), 0, 32)
+                    estado=0
+                    fundo = pygame.image.load("imagem_fundo.png").convert()
+                    telainicial=pygame.image.load("tela_inicial.png").convert()
+                    gameover=pygame.image.load("game_over.png").convert()
+                    background_size = fundo.get_size()
+                    background_size2 = gameover.get_size()
+                    background_size3 = telainicial.get_size()
+                    
+                    
+                    per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 700, 350)
+                    
+                    dino = Dinossauro(["dinossauro/Run (1).png", "dinossauro/Run (2).png", "dinossauro/Run (3).png", "dinossauro/Run (4).png", "dinossauro/Run (5).png", "dinossauro/Run (6).png", "dinossauro/Run (7).png", "dinossauro/Run (8).png"], 50, 280,per_1)
+                    obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"], 560, 430,per_1)
+                    lista_obst=["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"]
+                    
+                    todos_amigos.add(per_1)
+                    todos_inimigos.add(dino)
+                    relogio = pygame.time.Clock()
+                    
+                    timer = True
+                    #-------------------------------------------------------
+                    game_run = True
+                    w,h = background_size
+                    x = 0
+                    y = 0
+                    x1 = w
+                    y1 = 0
+                    
+                    pygame.display.set_caption('Dino Run')
+                    dx_cria = 100
+                    t_0 = 0
+                    pont = 0
+                    contra_pont = 0
+                    novo_d_x = 0
+                    dx_cria=1000
+                    distancia=0
+                    velocidade=30
+                    font = pygame.font.SysFont('assets/swiss911.ttf', 50)
+                    font2 = pygame.font.SysFont('assets/swiss911.ttf', 100)
+
+
+
+        
+                    estado=1            
+                    
                     
     pygame.display.flip()
             
