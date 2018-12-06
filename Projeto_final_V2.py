@@ -5,6 +5,8 @@ from pygame.locals import *
 import numpy as np
 import random
 
+cronometro = 0
+
 inicio = pygame.init()
 
 pygame.init()
@@ -146,15 +148,15 @@ font = pygame.font.SysFont('assets/swiss911.ttf', 40)
 while game_run:
 #------------------------------------------------------------------
 # Exibir cronometro e outros na tela 
-    #tempo = str("%.2f" % cronometro)
-    #tela.blit(font.render(tempo, True, (0, 0, 0)), (550,25))
+    tempo = str("%.2f" % cronometro)
+    tela.blit(font.render(tempo, True, (0, 0, 0)), (550,25))
     pygame.display.update()
     if timer:
         tempo = str("%.2f" % cronometro)
-        tela.blit(font.render(tempo, True, (0, 0, 0)), (550,25)) #centro
+        #tela.blit(font.render(tempo, True, (0, 0, 0)), (550,25)) #centro
         fonte = pygame.font.SysFont('Consolas', 50)      
         total = str("%.2f" % cronometro)
-        #tela.blit(font.render(tempo, True, (0, 0, 0)), (50,50)) (canto superiro esquerdo)
+        tela.blit(font.render(tempo, True, (0, 0, 0)), (50,50)) #(canto superiro esquerdo)
         pygame.display.update()
                 
         if not game_run:
@@ -167,7 +169,7 @@ while game_run:
     tempo = relogio.tick(velocidade)
     if estado==0:
         conta_t = pygame.time.get_ticks()
-        conta = (per_1.d_x * 1)/183
+        conta = (per_1.d_x * 1)/200
         novo_d_x += conta
             
         if per_1.d_x>dx_cria:
