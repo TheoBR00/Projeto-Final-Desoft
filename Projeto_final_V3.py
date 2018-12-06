@@ -165,7 +165,7 @@ while game_run:
                     pygame.mixer.music.stop()
                     game_run = False
             if (event.type==pygame.KEYDOWN):
-                if (event.key==pygame.K_SPACE): 
+                if (event.key==pygame.K_KP_ENTER): 
                     estado=1        
     if estado==1:
         
