@@ -1,0 +1,281 @@
+# -*- coding: utf-8 -*-
+import pygame
+import sys
+from pygame.locals import *
+import numpy as np
+import random
+
+cronometro = 0
+
+inicio = pygame.init()
+
+pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load("musica jogo.mp3")
+pygame.mixer.music.play()
+class Personagem(pygame.sprite.Sprite):
+    
+    def __init__(self, sprite, pos_x, pos_y):
+        self.atual = 0
+        pygame.sprite.Sprite.__init__(self)
+        self.imagens = []
+        for imagem in sprite:
+            self.image = pygame.image.load(imagem)
+            self.imagens.append(self.image)
+        self.rect = self.image.get_rect()
+        self.rect.x = pos_x
+        self.rect.y = pos_y
+        self.d_x= 0
+        self.v_y = 0
+        self.v_x = 10
+   
+    def vel(self, velocidade_y,velocidade_x):
+        self.v_y = velocidade_y
+        self.v_x = velocidade_x
+    
+    def vida(self, life):
+        self.vida = life
+    
+    def damage(self, dinossauro, personagem, dano):
+        for enemy in dinossauro and pygame.sprite.collide(personagem, dinossauro, False):
+            enemy.vida -= dano
+            
+    def jump(self):
+        self.v_y = -18 
+        self.v_x = 10
+             
+    def update(self):
+        self.atual += 1
+        if self.atual >= len(self.imagens):
+            self.atual = 0
+        self.image = self.imagens[self.atual]
+        self.rect.y += self.v_y
+        self.v_y += 1
+        #self.v_x=10
+        self.d_x += self.v_x
+        if self.rect.y > 350:
+            self.rect.y = 350
+            self.v_y = 0
+            
+class Dinossauro(pygame.sprite.Sprite):
+    
+    def __init__(self, sprite, pos_x, pos_y,per_1):
+        self.atual = 0
+        pygame.sprite.Sprite.__init__(self)
+        self.imagens = []
+        for imagem in sprite:
+            self.image = pygame.image.load(imagem)
+            self.imagens.append(self.image)
+        self.rect = self.image.get_rect()
+        self.rect.x = pos_x
+        self.rect.y = pos_y
+        self.v_y = 0
+        self.v_x=per_1.v_x-0.2
+        self.per_1=per_1
+    def vel(self, velocidade_x):
+        self.v_x = velocidade_x
+    
+    def update(self):
+        self.atual += 1
+        if self.atual >= len(self.imagens):
+            self.atual = 0
+        self.image = self.imagens[self.atual]
+        if self.rect.x+35<self.per_1.rect.x :
+            self.rect.x+=self.v_x-self.per_1.v_x
+        
+class obstaculos(pygame.sprite.Sprite):
+    
+    def __init__(self, sprite, pos_x, pos_y,per_1):
+        self.atual = 0
+        pygame.sprite.Sprite.__init__(self)
+        self.imagens = []
+        for imagem in sprite:
+            self.image = pygame.image.load(imagem)
+            self.imagens.append(self.image)
+        self.per_1=per_1    
+        self.rect = self.image.get_rect()
+        self.rect.x = pos_x
+        self.rect.y = pos_y
+        self.v_x = -10
+    
+    def update(self):
+        self.rect.x -= self.per_1.v_x
+        
+        
+todos_amigos = pygame.sprite.Group()
+todos_inimigos = pygame.sprite.Group()
+todos_obstaculos = pygame.sprite.Group()
+tela = pygame.display.set_mode((1250, 600), 0, 32)
+estado=0
+fundo = pygame.image.load("imagem_fundo.png").convert()
+telainicial=pygame.image.load("tela_inicial.png").convert()
+gameover=pygame.image.load("game_over.png").convert()
+background_size = fundo.get_size()
+background_size2 = gameover.get_size()
+background_size3 = telainicial.get_size()
+
+
+per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 700, 350)
+#per_1_j = Personagem(["menino pulando/Jump__000", "menino pulando/Jump__001", "menino pulando/Jump__002", "menino pulando/Jump__003", "menino pulando/Jump__004", "menino pulando/Jump__005", "menino pulando/Jump__006", "menino pulando/Jump__007", "menino pulando/Jump__008", "menino pulando/Jump__009"])
+dino = Dinossauro(["dinossauro/Run (1).png", "dinossauro/Run (2).png", "dinossauro/Run (3).png", "dinossauro/Run (4).png", "dinossauro/Run (5).png", "dinossauro/Run (6).png", "dinossauro/Run (7).png", "dinossauro/Run (8).png"], 50, 280,per_1)
+obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"], 560, 430,per_1)
+lista_obst=["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"]
+
+todos_amigos.add(per_1)
+todos_inimigos.add(dino)
+relogio = pygame.time.Clock()
+#-------------------------------------------------------
+#-----------Em breve novos abjetos na tela--------------
+#counter, text = 0, 'inicio'.rjust(3)
+#pygame.time.set_timer(pygame.USEREVENT, 1000)
+#font = pygame.font.SysFont('Consolas', 30)
+timer = True
+#-------------------------------------------------------
+game_run = True
+w,h = background_size
+x = 0
+y = 0
+x1 = w
+y1 = 0
+
+pygame.display.set_caption('Dino Run')
+dx_cria = 100
+t_0 = 0
+pont = 0
+contra_pont = 0
+novo_d_x = 0
+dx_cria=1000
+distancia=0
+velocidade=30
+font = pygame.font.SysFont('assets/swiss911.ttf', 50)
+font2 = pygame.font.SysFont('assets/swiss911.ttf', 100)
+
+
+
+        
+while game_run:
+
+    tempo = relogio.tick(velocidade)
+    
+    if estado==0:
+        
+        tela.blit(telainicial, (0, 0))
+        for event in pygame.event.get():
+            if event.type == QUIT:        
+                    pygame.mixer.music.stop()
+                    game_run = False
+    if estado==1:
+        
+        palavra_pontuacao='Pontuação:'
+        palavra_tempo='Tempo:'
+        tempo = str("%.2f" % cronometro)
+        
+        pontuacao=str("%.0f"% distancia)
+        
+        if timer:
+            tempo = str("%.2f" % cronometro)
+        #tela.blit(font.render(tempo, True, (0, 0, 0)), (550,25)) #centro
+        fonte = pygame.font.SysFont('Consolas', 50)      
+        total = str("%.2f" % cronometro)
+        tela.blit(font.render(palavra_tempo, True, (0, 0, 0)), (10,10))
+        tela.blit(font.render(tempo, True, (0, 0, 0)), (50,50)) #(canto superiro esquerdo)
+        pygame.display.update()
+        
+                
+        if not game_run:
+            tempo = False
+            timer = False
+            if not timer:
+               cronometro += 0
+               
+        conta_t = pygame.time.get_ticks()
+        conta = (per_1.d_x * 1)/200
+        novo_d_x += conta
+            
+        if per_1.d_x>dx_cria:
+            
+            obst = obstaculos([random.choice(lista_obst)], 1200, 430,per_1)
+            todos_obstaculos.add(obst)
+            distancia+=per_1.d_x
+            if dx_cria>500:
+                dx_cria-=20
+            if velocidade<90:
+                velocidade+=1
+            per_1.d_x= 0
+            
+        x1 -= per_1.v_x
+        x -= per_1.v_x
+        tela.blit(fundo, (x, y))
+        tela.blit(fundo, (x1, y1))
+              
+        tela.blit(fundo, (x, y))  
+        tela.blit(fundo, (x1, y1))
+        if x < -w:
+            x = w
+        if x1 < -w:
+            x1 = w
+        colisao = pygame.sprite.collide_mask(per_1,obst)
+        colisao_dino = pygame.sprite.collide_mask(dino,per_1)
+        
+        if colisao:
+            
+            obst.v_x= 0
+            per_1.v_x = 0
+        else:
+            obst.v_x=-10
+        
+        if colisao_dino:
+            
+            estado=2
+            
+            pygame.mixer.music.stop()
+            cronometro=cronometro
+            distancia=distancia
+        
+        else:    
+            
+            cronometro += 1/30
+            distancia+=(per_1.d_x/100000000000)
+            
+        for event in pygame.event.get():
+            if (event.type==pygame.KEYDOWN):
+                if (event.key==pygame.K_SPACE) and per_1.rect.y > 180: 
+                    per_1.jump()
+            if colisao == True:
+                pont += 1
+        
+        
+            elif colisao == False and event.key==pygame.K_SPACE:
+                contra_pont -= 1
+                
+            if event.type == QUIT:
+                print(novo_d_x)
+                pygame.mixer.music.stop()
+                game_run = False
+
+
+        todos_amigos.draw(tela)
+        todos_obstaculos.update()
+        todos_obstaculos.draw(tela)
+        todos_obstaculos.draw(tela)
+        todos_amigos.update()
+        todos_inimigos.update()
+        todos_inimigos.draw(tela)
+        
+        
+    elif estado==2:
+        tela.blit(gameover, (0, 0))
+        tela.blit(font2.render(palavra_pontuacao, True, (0, 0, 0)), (450,450))
+        tela.blit(font2.render(pontuacao, True, (0, 0, 0)), (550,530))
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                    print(novo_d_x)
+                    pygame.mixer.music.stop()
+                    
+                    game_run = False
+                    
+    pygame.display.flip()
+            
+pygame.display.quit()
+
+
