@@ -160,7 +160,7 @@ while game_run:
         pygame.display.update()
                 
         if not game_run:
-            cronometro = Pause  
+            tempo = False
             timer = False
             if not timer:
                cronometro += 0
