@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pygame
 import sys
 from pygame.locals import *
@@ -7,12 +6,13 @@ import random
 
 cronometro = 0
 
+
 inicio = pygame.init()
 
 pygame.init()
 pygame.mixer.init()
 pygame.mixer.music.load("musica jogo.mp3")
-pygame.mixer.music.play()
+pygame.mixer.music.play(1000000000)
 class Personagem(pygame.sprite.Sprite):
     
     def __init__(self, sprite, pos_x, pos_y):
@@ -146,7 +146,8 @@ contra_pont = 0
 novo_d_x = 0
 dx_cria=1000
 distancia=0
-high_score=distancia
+maior=0
+highscore=[]
 velocidade=30
 font = pygame.font.SysFont('assets/swiss911.ttf', 50)
 font2 = pygame.font.SysFont('assets/swiss911.ttf', 100)
@@ -157,7 +158,7 @@ font2 = pygame.font.SysFont('assets/swiss911.ttf', 100)
 while game_run:
 
     tempo = relogio.tick(velocidade)
-    
+        
     if estado==0:
         
         tela.blit(telainicial, (0, 0))
@@ -170,16 +171,14 @@ while game_run:
                     estado=1        
     if estado==1:
         
-        palavra_high_score='High Score:'
-        palavra_pontuacao='Pontuação:'
-        palavra_tempo='Tempo:'
-        tempo = str("%.2f" % cronometro)
-        high_score1=distancia
         
-        pontuacao=str("%.0f"% distancia)
-        high_score=str("%.0f"% high_score1)
+        palavra_pontuacao='Pontuação:'
+        #palavra_tempo='Tempo:'
+        
+        pontuacao=str("%.0f"% cronometro)
+        
         if timer:
-            tempo = str("%.2f" % cronometro)
+            tempo = str("%.0f" % cronometro)
         #tela.blit(font.render(tempo, True, (0, 0, 0)), (550,25)) #centro
         fonte = pygame.font.SysFont('Consolas', 50)      
         total = str("%.2f" % cronometro)
@@ -191,6 +190,7 @@ while game_run:
             timer = False
             if not timer:
                cronometro += 0
+               
                
         conta_t = pygame.time.get_ticks()
         conta = (per_1.d_x * 1)/200
@@ -229,16 +229,31 @@ while game_run:
             obst.v_x=-10
         
         if colisao_dino:   
+            
             estado=2
             
             pygame.mixer.music.stop()
             cronometro=cronometro
-            distancia=distancia
+            
+            
+            
+            highscore.append(cronometro)
+            
+            maior=cronometro
+            i=0
+            while i<len(highscore):
+                if highscore[i]>maior:
+                    maior=highscore[i]
+                    
+                i+=1    
+            palavra_high_score='High Score:'
+            high_score=str("%.0f"% maior)# ate fechar o programa
             
         
         else:    
             
-            cronometro += 1/30
+            cronometro += 1
+            #cronometro += 1/30
             distancia+=(per_1.d_x/100000000000)
             
         for event in pygame.event.get():
@@ -253,12 +268,11 @@ while game_run:
                 contra_pont -= 1
                 
             if event.type == QUIT:
-                print(novo_d_x)
+                
                 pygame.mixer.music.stop()
                 game_run = False
 
-        tela.blit(font.render(palavra_tempo, True, (0, 0, 0)), (10,10))
-        tela.blit(font.render(tempo, True, (0, 0, 0)), (50,50)) 
+        tela.blit(font2.render(pontuacao, True, (0, 0, 0)), (600,10)) 
         
         todos_amigos.draw(tela)
         todos_obstaculos.update()
@@ -271,19 +285,20 @@ while game_run:
         
     elif estado==2:
         tela.blit(gameover, (0, 0))
-        #tela.blit(font2.render(palavra_high_score, True, (0, 0, 0)), (10,450))
+        tela.blit(font2.render(palavra_high_score, True, (0, 0, 0)), (10,450))
         tela.blit(font2.render(palavra_pontuacao, True, (0, 0, 0)), (800,450))
         tela.blit(font2.render(pontuacao, True, (0, 0, 0)), (1000,530))
-        #tela.blit(font2.render(high_score, True, (0, 0, 0)), (200,530))
+        tela.blit(font2.render(high_score, True, (0, 0, 0)), (200,530))
         for event in pygame.event.get():
             if event.type == QUIT:
-                    print(novo_d_x)
+                
                     pygame.mixer.music.stop()
                     game_run = False
                     
             if (event.type==pygame.KEYDOWN):
                 if (event.key==pygame.K_RETURN): 
                     cronometro =0
+                    
                     todos_amigos = pygame.sprite.Group()
                     todos_inimigos = pygame.sprite.Group()
                     todos_obstaculos = pygame.sprite.Group()
@@ -339,5 +354,4 @@ while game_run:
     pygame.display.flip()
             
 pygame.display.quit()
-
 
