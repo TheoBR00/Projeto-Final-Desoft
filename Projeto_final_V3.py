@@ -284,7 +284,9 @@ while game_run:
         
         
     elif estado==2:
+        enter='Para jogar novamente, aperte enter'
         tela.blit(gameover, (0, 0))
+        tela.blit(font2.render(enter, True, (0, 0, 0)), (30,50))
         tela.blit(font2.render(palavra_high_score, True, (0, 0, 0)), (10,450))
         tela.blit(font2.render(palavra_pontuacao, True, (0, 0, 0)), (800,450))
         tela.blit(font2.render(pontuacao, True, (0, 0, 0)), (1000,530))
@@ -296,6 +298,7 @@ while game_run:
                     game_run = False
                     
             if (event.type==pygame.KEYDOWN):
+                
                 if (event.key==pygame.K_RETURN): 
                     cronometro =0
                     
