@@ -153,7 +153,6 @@ pont = 0
 contra_pont = 0
 novo_d_x = 0
 dx_cria=1000
-distancia=0
 maior=0
 highscore=[]
 velocidade=30
@@ -180,14 +179,11 @@ while game_run:
     if estado==1:
         
         
-        palavra_pontuacao='Pontuação:'
-        #palavra_tempo='Tempo:'
-        
+        palavra_pontuacao='Pontuação:
         pontuacao=str("%.0f"% cronometro)
         
         if timer:
             tempo = str("%.0f" % cronometro)
-        #tela.blit(font.render(tempo, True, (0, 0, 0)), (550,25)) #centro
         fonte = pygame.font.SysFont('Consolas', 50)      
         total = str("%.2f" % cronometro)
         
@@ -208,7 +204,6 @@ while game_run:
             
             obst = obstaculos([random.choice(lista_obst)], 1200, 430,per_1)
             todos_obstaculos.add(obst)
-            distancia+=per_1.d_x
             if dx_cria>550:
                 dx_cria-=20
             if velocidade<100:
@@ -261,8 +256,7 @@ while game_run:
         else:    
             
             cronometro += 1
-            #cronometro += 1/30
-            distancia+=(per_1.d_x/100000000000)
+          
 #------------------------------------------------------------------
         #-----------barra de energia--------------    
         for event in pygame.event.get():
@@ -356,13 +350,11 @@ while game_run:
                     y1 = 0
                     
                     pygame.display.set_caption('Dino Run')
-                    dx_cria = 100
                     t_0 = 0
                     pont = 0
                     contra_pont = 0
                     novo_d_x = 0
                     dx_cria=1000
-                    distancia=0
                     velocidade=30
                     font = pygame.font.SysFont('assets/swiss911.ttf', 50)
                     font2 = pygame.font.SysFont('assets/swiss911.ttf', 100)
