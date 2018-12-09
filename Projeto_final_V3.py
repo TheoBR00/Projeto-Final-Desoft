@@ -116,7 +116,6 @@ background_size3 = telainicial.get_size()
 
 
 per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 700, 350)
-#per_1_j = Personagem(["menino pulando/Jump__000", "menino pulando/Jump__001", "menino pulando/Jump__002", "menino pulando/Jump__003", "menino pulando/Jump__004", "menino pulando/Jump__005", "menino pulando/Jump__006", "menino pulando/Jump__007", "menino pulando/Jump__008", "menino pulando/Jump__009"])
 dino = Dinossauro(["dinossauro/Run (1).png", "dinossauro/Run (2).png", "dinossauro/Run (3).png", "dinossauro/Run (4).png", "dinossauro/Run (5).png", "dinossauro/Run (6).png", "dinossauro/Run (7).png", "dinossauro/Run (8).png"], 50, 280,per_1)
 obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"], 560, 430,per_1)
 lista_obst=["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"]
@@ -139,13 +138,11 @@ x1 = w
 y1 = 0
 
 pygame.display.set_caption('Dino Run')
-dx_cria = 100
 t_0 = 0
 pont = 0
 contra_pont = 0
 novo_d_x = 0
 dx_cria=1000
-distancia=0
 maior=0
 highscore=[]
 velocidade=30
