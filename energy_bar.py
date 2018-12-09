@@ -11,6 +11,8 @@ inicio = pygame.init()
 
 pygame.init()
 pygame.mixer.init()
+
+# Música obtida por integrante do trabalho
 pygame.mixer.music.load("musica jogo.mp3")
 pygame.mixer.music.play(1000000000)
 class Personagem(pygame.sprite.Sprite):
