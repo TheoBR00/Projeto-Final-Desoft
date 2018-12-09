@@ -1,16 +1,25 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Dec  9 18:39:36 2018
+
+@author: andre
+"""
+
 import pygame
 import sys
 from pygame.locals import *
 import numpy as np
 import random
 
-cronometro = 0
+pontos = 0
 
 
 inicio = pygame.init()
 
 pygame.init()
 pygame.mixer.init()
+
+# Música obtida por integrante do trabalho
 pygame.mixer.music.load("musica jogo.mp3")
 pygame.mixer.music.play(1000000000)
 class Personagem(pygame.sprite.Sprite):
@@ -109,6 +118,8 @@ tela = pygame.display.set_mode((1250, 600), 0, 32)
 estado=0
 fundo = pygame.image.load("imagem_fundo.png").convert()
 telainicial=pygame.image.load("tela_inicial.png").convert()
+
+# Tela de game over obtida em https://pt.aliexpress.com/item/Creative-Game-Over-Wordart-Car-Styling-Stickers-Car-Motocycle-Wall-Home-Glass-Window-Door-Laptop-Black/32791815782.html
 gameover=pygame.image.load("game_over.png").convert()
 background_size = fundo.get_size()
 background_size2 = gameover.get_size()
@@ -116,6 +127,7 @@ background_size3 = telainicial.get_size()
 
 
 per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 700, 350)
+#per_1_j = Personagem(["menino pulando/Jump__000", "menino pulando/Jump__001", "menino pulando/Jump__002", "menino pulando/Jump__003", "menino pulando/Jump__004", "menino pulando/Jump__005", "menino pulando/Jump__006", "menino pulando/Jump__007", "menino pulando/Jump__008", "menino pulando/Jump__009"])
 dino = Dinossauro(["dinossauro/Run (1).png", "dinossauro/Run (2).png", "dinossauro/Run (3).png", "dinossauro/Run (4).png", "dinossauro/Run (5).png", "dinossauro/Run (6).png", "dinossauro/Run (7).png", "dinossauro/Run (8).png"], 50, 280,per_1)
 obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"], 560, 430,per_1)
 lista_obst=["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"]
@@ -124,12 +136,16 @@ todos_amigos.add(per_1)
 todos_inimigos.add(dino)
 relogio = pygame.time.Clock()
 #-------------------------------------------------------
-#-----------Em breve novos abjetos na tela--------------
-#counter, text = 0, 'inicio'.rjust(3)
-#pygame.time.set_timer(pygame.USEREVENT, 1000)
-#font = pygame.font.SysFont('Consolas', 30)
-timer = True
+#-----------barra de energia--------------
+x_barra = 940
+y_barra = 20
+largura_barra = 300
+altura_barra = 40
+#desenha a barra no final, tem que por nas ultimas linhas 
+#pygame.draw.rect(tela, (0,255,0), (x_barra, y_barra,largura_barra, altura_barra))
+
 #-------------------------------------------------------
+timer = True
 game_run = True
 w,h = background_size
 x = 0
@@ -138,6 +154,7 @@ x1 = w
 y1 = 0
 
 pygame.display.set_caption('Dino Run')
+dx_cria = 100
 t_0 = 0
 pont = 0
 contra_pont = 0
@@ -169,16 +186,13 @@ while game_run:
     if estado==1:
         
         
-        palavra_pontuacao='Pontuação:'
-        #palavra_tempo='Tempo:'
-        
-        pontuacao=str("%.0f"% cronometro)
+        palavra_pontuacao='Pontuação'
+        pontuacao=str("%.0f"% pontos)
         
         if timer:
-            tempo = str("%.0f" % cronometro)
-        #tela.blit(font.render(tempo, True, (0, 0, 0)), (550,25)) #centro
+            tempo = str("%.0f" % pontos)
         fonte = pygame.font.SysFont('Consolas', 50)      
-        total = str("%.2f" % cronometro)
+        
         
         
                 
@@ -186,7 +200,7 @@ while game_run:
             tempo = False
             timer = False
             if not timer:
-               cronometro += 0
+               pontos += 0
                
                
         conta_t = pygame.time.get_ticks()
@@ -197,7 +211,6 @@ while game_run:
             
             obst = obstaculos([random.choice(lista_obst)], 1200, 430,per_1)
             todos_obstaculos.add(obst)
-            distancia+=per_1.d_x
             if dx_cria>550:
                 dx_cria-=20
             if velocidade<100:
@@ -230,13 +243,13 @@ while game_run:
             estado=2
             
             pygame.mixer.music.stop()
-            cronometro=cronometro
+            pontos=pontos
             
             
             
-            highscore.append(cronometro)
+            highscore.append(pontos)
             
-            maior=cronometro
+            maior=pontos
             i=0
             while i<len(highscore):
                 if highscore[i]>maior:
@@ -246,31 +259,66 @@ while game_run:
             palavra_high_score='High Score:'
             high_score=str("%.0f"% maior)# ate fechar o programa
             
+#------------------------------------------------------------------
         
         else:    
             
-            cronometro += 1
-            #cronometro += 1/30
-            distancia+=(per_1.d_x/100000000000)
-            
+            pontos += 1
+            if largura_barra<300 and largura_barra>0:
+                if velocidade<50:
+                    largura_barra += 0.3
+                if velocidade> 50 and velocidade<60:
+                    largura_barra += 0.5    
+                else:
+                    largura_barra += 1
+          
+
+        #-----------barra de energia--------------    
         for event in pygame.event.get():
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                
+                largura_barra -= 50
+                
+            if largura_barra <= 0:
+                estado = 2 
+                pygame.mixer.music.stop()
+                pontos=pontos
+                maior=pontos-1
+                palavra_high_score='High Score:'
+                high_score=str("%.0f"% maior)
+                
+                i=0
+                while i<len(highscore):
+                    if highscore[i]>maior:
+                        maior=highscore[i]
+                largura_barra=300
+
+
+
+#------------------------------------------------------------------
+
             if (event.type==pygame.KEYDOWN):
                 if (event.key==pygame.K_SPACE) and per_1.rect.y > 200: 
                     per_1.jump()
             if colisao == True:
                 pont += 1
+                largura_barra -= 60
         
         
             elif colisao == False and event.key==pygame.K_SPACE:
                 contra_pont -= 1
-                
+                largura_barra += 1
+#------------------------------------------------------------------
+
             if event.type == QUIT:
                 
                 pygame.mixer.music.stop()
                 game_run = False
 
-        tela.blit(font2.render(pontuacao, True, (0, 0, 0)), (600,10)) 
-        
+        tela.blit(font2.render(pontuacao, True, (0, 0, 0)), (550,10))
+        tela.blit(font.render('Energia', True, (50, 100, 60)), (790,20))
+        pygame.draw.rect(tela, (50,100,60), (x_barra, y_barra,largura_barra, altura_barra))
         todos_amigos.draw(tela)
         todos_obstaculos.update()
         todos_obstaculos.draw(tela)
@@ -281,7 +329,7 @@ while game_run:
         
         
     elif estado==2:
-        enter='Para jogar novamente, aperte enter'
+        enter='Para jogar novamente, aperte Enter'
         tela.blit(gameover, (0, 0))
         tela.blit(font2.render(enter, True, (0, 0, 0)), (30,50))
         tela.blit(font2.render(palavra_high_score, True, (0, 0, 0)), (10,450))
@@ -290,20 +338,21 @@ while game_run:
         tela.blit(font2.render(high_score, True, (0, 0, 0)), (200,530))
         for event in pygame.event.get():
             if event.type == QUIT:
-                
+                    
                     pygame.mixer.music.stop()
                     game_run = False
                     
             if (event.type==pygame.KEYDOWN):
-                
                 if (event.key==pygame.K_RETURN): 
-                    cronometro =0
+                    
+                    pontos = 0
                     
                     todos_amigos = pygame.sprite.Group()
                     todos_inimigos = pygame.sprite.Group()
                     todos_obstaculos = pygame.sprite.Group()
                     tela = pygame.display.set_mode((1250, 600), 0, 32)
                     estado=0
+                    # Tela de fundo obtida em https://www.dreamstime.com/illustration/game-background-2d-game.html?pg=2
                     fundo = pygame.image.load("imagem_fundo.png").convert()
                     telainicial=pygame.image.load("tela_inicial.png").convert()
                     gameover=pygame.image.load("game_over.png").convert()
@@ -311,10 +360,13 @@ while game_run:
                     background_size2 = gameover.get_size()
                     background_size3 = telainicial.get_size()
                     
-                    
+                    # Sprites de menino obtidos em https://www.gameart2d.com/temple-run---free-sprites.html
                     per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 700, 350)
                     
+                    # Sprites de dinossauro obtidos em https://www.gameart2d.com/free-dino-sprites.html
                     dino = Dinossauro(["dinossauro/Run (1).png", "dinossauro/Run (2).png", "dinossauro/Run (3).png", "dinossauro/Run (4).png", "dinossauro/Run (5).png", "dinossauro/Run (6).png", "dinossauro/Run (7).png", "dinossauro/Run (8).png"], 50, 280,per_1)
+                    
+                    # Sprites de obstáculos obtidos em http://blog.elede.com.br/wp-content/uploads/2016/11/obstaculos-2.0.png
                     obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"], 560, 430,per_1)
                     lista_obst=["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"]
                     
@@ -332,13 +384,11 @@ while game_run:
                     y1 = 0
                     
                     pygame.display.set_caption('Dino Run')
-                    dx_cria = 100
                     t_0 = 0
                     pont = 0
                     contra_pont = 0
                     novo_d_x = 0
                     dx_cria=1000
-                    distancia=0
                     velocidade=30
                     font = pygame.font.SysFont('assets/swiss911.ttf', 50)
                     font2 = pygame.font.SysFont('assets/swiss911.ttf', 100)
@@ -347,11 +397,10 @@ while game_run:
                     pygame.init()
                     pygame.mixer.init()
                     pygame.mixer.music.load("musica jogo.mp3")
-                    pygame.mixer.music.play()
+                    pygame.mixer.music.play(1000000000)
         
                     estado=0            
                     
     pygame.display.flip()
             
 pygame.display.quit()
-
