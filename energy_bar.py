@@ -326,10 +326,13 @@ while game_run:
                     background_size2 = gameover.get_size()
                     background_size3 = telainicial.get_size()
                     
-                    
+                    # Sprites de menino obtidos em https://www.gameart2d.com/temple-run---free-sprites.html
                     per_1 = Personagem(["menino correndo/Run__000.png", "menino correndo/Run__001.png","menino correndo/Run__002.png","menino correndo/Run__003.png","menino correndo/Run__004.png","menino correndo/Run__005.png","menino correndo/Run__006.png", "menino correndo/Run__007.png","menino correndo/Run__008.png","menino correndo/Run__009.png"], 700, 350)
                     
+                    # Sprites de dinossauro obtidos em https://www.gameart2d.com/free-dino-sprites.html
                     dino = Dinossauro(["dinossauro/Run (1).png", "dinossauro/Run (2).png", "dinossauro/Run (3).png", "dinossauro/Run (4).png", "dinossauro/Run (5).png", "dinossauro/Run (6).png", "dinossauro/Run (7).png", "dinossauro/Run (8).png"], 50, 280,per_1)
+                    
+                    # Sprites de obstáculos obtidos em http://blog.elede.com.br/wp-content/uploads/2016/11/obstaculos-2.0.png
                     obst = obstaculos(["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"], 560, 430,per_1)
                     lista_obst=["obstaculos/pedra.png", "obstaculos/tronco.png", "obstaculos/caixa.png"]
                     
