@@ -318,6 +318,7 @@ while game_run:
                     todos_obstaculos = pygame.sprite.Group()
                     tela = pygame.display.set_mode((1250, 600), 0, 32)
                     estado=0
+                    # Tela de fundo obtida em https://www.dreamstime.com/illustration/game-background-2d-game.html?pg=2
                     fundo = pygame.image.load("imagem_fundo.png").convert()
                     telainicial=pygame.image.load("tela_inicial.png").convert()
                     gameover=pygame.image.load("game_over.png").convert()
