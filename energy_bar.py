@@ -111,6 +111,8 @@ tela = pygame.display.set_mode((1250, 600), 0, 32)
 estado=0
 fundo = pygame.image.load("imagem_fundo.png").convert()
 telainicial=pygame.image.load("tela_inicial.png").convert()
+
+# Tela de game over obtida em https://pt.aliexpress.com/item/Creative-Game-Over-Wordart-Car-Styling-Stickers-Car-Motocycle-Wall-Home-Glass-Window-Door-Laptop-Black/32791815782.html
 gameover=pygame.image.load("game_over.png").convert()
 background_size = fundo.get_size()
 background_size2 = gameover.get_size()
